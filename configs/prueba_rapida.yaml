@@ -1,0 +1,8 @@
+# Prueba de humo del pipeline completo (~1-2 min): verifica instalación, ejecución y análisis.
+experimento: prueba_rapida
+algoritmos: [OriginalSA, OriginalPSO, OriginalDE]
+funciones: ["builtin:esfera_desplazada", "cec2017:F1", "cec2017:F4"]
+dimensiones: [10]
+corridas: 5
+fe_por_dim: 1000
+pop_size: 50

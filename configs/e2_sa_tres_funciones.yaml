@@ -1,0 +1,14 @@
+# E2 — Una metaheurística, tres funciones (unimodal separable, unimodal rotada, multimodal)
+experimento: e2_sa_tres_funciones
+algoritmos: [OriginalSA]
+funciones:
+  - "builtin:esfera_desplazada"   # unimodal separable
+  - "cec2017:F4"                  # opfunu F4 = Rastrigin desplazada y rotada (F5 oficial)
+  - "cec2017:F1"                  # Bent Cigar desplazada y rotada: unimodal mal condicionada
+# OJO: opfunu omite la F2 oficial de CEC2017 y recorre la numeración: opfunu Fk = oficial F(k+1)
+# para k ≥ 2. Verificar cada función contra la definición oficial antes de usarla.
+# (opfunu F9 = Schwefel quedó fuera: produce errores negativos, su f_global no es el mínimo.)
+dimensiones: [10, 30]             # CEC2017 solo admite D ∈ {10, 30, 50, 100}
+corridas: 30
+fe_por_dim: 10000
+pop_size: 50

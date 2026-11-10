@@ -1,0 +1,10 @@
+# Usa el numpy/scipy/pandas/matplotlib que ya trae el entorno (Colab: numpy 2.x).
+opfunu==1.0.1
+setuptools<81        # opfunu importa pkg_resources, eliminado en setuptools recientes
+pyyaml>=6.0
+tabulate
+# MEALPY se instala aparte, SIN dependencias:
+#   pip install --no-deps mealpy==3.0.3
+# Su metadata exige numpy<=1.26.0, que no tiene binarios para Python >= 3.13
+# (pip intenta compilarlo y falla). Se verificó que MEALPY 3.0.3 corre con numpy 2.x.
+# Opcional, para orquestación:  pip install snakemake

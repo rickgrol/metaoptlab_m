@@ -1,0 +1,17 @@
+# E3 — Tres metaheurísticas, tres funciones, curvas en la misma gráfica
+experimento: e3_tres_algoritmos
+algoritmos: [OriginalSA, OriginalPSO, OriginalDE]
+funciones:
+  - "builtin:esfera_desplazada"
+  - "cec2017:F4"                  # Rastrigin (F5 oficial)
+  - "cec2017:F1"                  # Bent Cigar desplazada y rotada: unimodal mal condicionada
+# OJO: opfunu omite la F2 oficial de CEC2017 y recorre la numeración (opfunu Fk = oficial F(k+1), k ≥ 2).
+# opfunu F9 (Schwefel) quedó fuera: produce errores negativos, su f_global no es el mínimo.
+dimensiones: [10, 30]             # CEC2017 solo admite D ∈ {10, 30, 50, 100}
+corridas: 30
+fe_por_dim: 10000
+pop_size: 50
+# Parámetros explícitos (si se omiten, se usan los valores por defecto de MEALPY,
+# que deben reportarse en el paper). Ejemplo:
+# parametros:
+#   OriginalDE: {wf: 0.8, cr: 0.9}

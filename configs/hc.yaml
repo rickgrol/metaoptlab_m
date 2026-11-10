@@ -1,0 +1,10 @@
+# Hill Climbing: versión básica de MEALPY (math_based/HC.py, clase OriginalHC).
+# La otra clase del módulo, SwarmHC, es una variante propia de los autores de MEALPY;
+# se menciona en docs/algoritmos/hill_climbing.md pero no se corre aquí.
+experimento: hc
+algoritmos: [OriginalHC]
+funciones: ["builtin:esfera_desplazada", "cec2017:F1", "cec2017:F4"]
+dimensiones: [10]
+corridas: 5
+fe_por_dim: 1000
+pop_size: 50

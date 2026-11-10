@@ -1,0 +1,9 @@
+# TLBO: versión básica de MEALPY (human_based/TLO.py, clase OriginalTLO).
+# Las otras clases (DevTLO, ImprovedTLO) se describen en docs/algoritmos/tlbo.md.
+experimento: tlo
+algoritmos: [OriginalTLO]
+funciones: ["builtin:esfera_desplazada", "cec2017:F1", "cec2017:F4"]
+dimensiones: [10]
+corridas: 5
+fe_por_dim: 1000
+pop_size: 50
