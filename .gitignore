@@ -1,0 +1,9 @@
+# Resultados de corridas (se guardan en Google Drive, no en el repositorio)
+resultados/
+# Archivos temporales y del sistema
+*.zip
+*.tmp
+.DS_Store
+__pycache__/
+.ipynb_checkpoints/
+.snakemake/

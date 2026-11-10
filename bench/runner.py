@@ -11,6 +11,10 @@ from .functions import build_function
 from .tracker import Tracker, PresupuestoAgotado
 
 
+def es_externo(nombre):
+    return nombre.startswith("externo:")
+
+
 def catalogo():
     import mealpy
     try:
@@ -63,6 +67,8 @@ def ejecutar_tarea(cfg, tarea, forzar=False):
            "modo": cfg["modo"], "mealpy": mealpy.__version__,
            "python": platform.python_version()}
     t0 = time.perf_counter()
+    if es_externo(tarea.algoritmo):
+        return _ejecutar_externo(cfg, tarea, destino, f, lb, ub, tr, params, reg, t0)
     try:
         cls = catalogo()[tarea.algoritmo]
         # Número de épocas calibrado al presupuesto. Muchos algoritmos ajustan sus
@@ -89,8 +95,29 @@ def ejecutar_tarea(cfg, tarea, forzar=False):
     except Exception as e:
         reg.update({"estado": "error", "error": f"{type(e).__name__}: {e}",
                     "traceback": traceback.format_exc()[-2000:]})
-    reg["tiempo_s"] = time.perf_counter() - t0
+    return _guardar(reg, destino, t0)
 
+
+def _ejecutar_externo(cfg, tarea, destino, f, lb, ub, tr, params, reg, t0):
+    from .externos import EXTERNOS
+    nombre = tarea.algoritmo.split(":", 1)[1]
+    try:
+        alg = EXTERNOS[nombre](**params)
+        tr.reset()
+        try:
+            alg.solve(tr, lb, ub, tarea.dim, reg["semilla"])
+        except PresupuestoAgotado:
+            pass
+        reg.update(tr.resultado())
+        reg["estado"] = "ok" if tr.n >= reg["max_fe"] else "subconsumo"
+    except Exception as e:
+        reg.update({"estado": "error", "error": f"{type(e).__name__}: {e}",
+                    "traceback": traceback.format_exc()[-2000:]})
+    return _guardar(reg, destino, t0)
+
+
+def _guardar(reg, destino, t0):
+    reg["tiempo_s"] = time.perf_counter() - t0
     destino.parent.mkdir(parents=True, exist_ok=True)
     tmp = destino.with_suffix(".tmp")
     tmp.write_text(json.dumps(reg, default=float))

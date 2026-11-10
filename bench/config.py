@@ -29,7 +29,8 @@ class Tarea:
     @property
     def clave(self):
         f = self.funcion.replace(":", "-")
-        return f"{self.algoritmo}/{f}/D{self.dim}/r{self.corrida:02d}"
+        a = self.algoritmo.replace(":", "-")
+        return f"{a}/{f}/D{self.dim}/r{self.corrida:02d}"
 
     @property
     def bloque(self):
@@ -66,9 +67,12 @@ def tareas(cfg):
 def validar(cfg):
     """Antes de lanzar nada: ¿existen los algoritmos y las combinaciones función × dimensión?"""
     from .functions import validate
-    from .runner import catalogo
+    from .runner import catalogo, es_externo
+    from .externos import EXTERNOS
     cat = catalogo()
-    faltan = [a for a in cfg["algoritmos"] if a not in cat]
+    faltan = [a for a in cfg["algoritmos"]
+              if (es_externo(a) and a.split(":", 1)[1] not in EXTERNOS)
+              or (not es_externo(a) and a not in cat)]
     if faltan:
         raise ValueError(f"Algoritmos que no existen en este MEALPY: {faltan}")
     for f, d in itertools.product(cfg["funciones"], cfg["dimensiones"]):

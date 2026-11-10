@@ -16,7 +16,10 @@ bench/
   config.py         YAML → tareas (algoritmo, función, D, corrida)
   runner.py         ejecuta una tarea → un JSON (escritura atómica, reanudable)
   analysis/         aggregate · stats · plots  (solo lee JSON)
+bench/externos/     algoritmos que no existen en MEALPY (por ejemplo, Random Search)
 docs/algoritmos/    un archivo .md por método: qué implementa MEALPY, variantes, diferencias
+docs/avances/       resúmenes de avance
+docs/plan_de_trabajo.md   plan por fases y seguimiento de los métodos
 run_experiment.py   módulo de ejecución (no interactivo)
 analyze.py          módulo de análisis (no ejecuta algoritmos)
 Snakefile           orquestación: un job por bloque algoritmo × función × D
@@ -72,5 +75,5 @@ python run_experiment.py configs/e3_tres_algoritmos.yaml --corridas 5 --dimensio
    - puede evaluar fuera de límites;
    - cada corrida en D = 30 tarda unos 3 minutos.
    
-   Esto encaja en el criterio de excepción del Dr. Marrero ("si la implementación tiene problemas serios") para usar el SA propio, siempre que se justifique.
+   Por estos problemas, se justifica considerar una implementación externa de SA.
 5. **`OriginalDE` usa F = `wf` = 0.1 por defecto**, muy por debajo de los valores clásicos (0.5–0.9), y `OriginalPSO` usa inercia fija w = 0.4. Los parámetros por defecto deben reportarse o fijarse explícitamente en `parametros:`.

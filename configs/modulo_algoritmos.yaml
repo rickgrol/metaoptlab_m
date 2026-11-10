@@ -1,0 +1,17 @@
+# Módulo de algoritmos: los métodos básicos sumados hasta ahora, en su versión básica.
+# Prueba reducida (5 corridas, D = 10, 1 000·D evaluaciones) para revisar y documentar.
+experimento: modulo_algoritmos
+algoritmos:
+  - externo:RandomSearch    # referencia (no existe en MEALPY)
+  - OriginalHC              # Hill Climbing
+  - OriginalSA              # SA (Simulated Annealing)
+  - OriginalTLO             # TLBO
+  - OriginalPSO             # PSO
+  - OriginalDE              # Evolución Diferencial
+  - BaseGA                  # Algoritmo Genético (OriginalGA no evoluciona en MEALPY 3.0.3)
+  - OriginalABC             # Colonia Artificial de Abejas
+funciones: ["builtin:esfera_desplazada", "cec2017:F1", "cec2017:F4"]
+dimensiones: [10]
+corridas: 5
+fe_por_dim: 1000
+pop_size: 50

@@ -1,4 +1,4 @@
-# E1 — Una metaheurística, una función, tres dimensiones (indicación del Dr. Marrero, 20-oct-2026)
+# E1 — Una metaheurística, una función, tres dimensiones (prueba inicial)
 experimento: e1_sa_esfera
 algoritmos: [OriginalSA]
 funciones: ["builtin:esfera_desplazada"]   # desplazada: evita premiar el sesgo al centro
