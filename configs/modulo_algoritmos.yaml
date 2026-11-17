@@ -10,6 +10,8 @@ algoritmos:
   - OriginalDE              # Evolución Diferencial
   - BaseGA                  # Algoritmo Genético (OriginalGA no evoluciona en MEALPY 3.0.3)
   - OriginalABC             # Colonia Artificial de Abejas
+  - OriginalACOR            # ACO para dominios continuos (ACO_R)
+  - CMA_ES                  # Estrategia Evolutiva con Adaptación de la Matriz de Covarianza
 funciones: ["builtin:esfera_desplazada", "cec2017:F1", "cec2017:F4"]
 dimensiones: [10]
 corridas: 5

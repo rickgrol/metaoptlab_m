@@ -34,8 +34,8 @@ La lista de los 15 métodos se confirma contra la que envió el Dr. Marrero; la 
 | 6 | DE | Evolutivo | `OriginalDE` | Sumado y documentado | `differential_evolution.md` |
 | 7 | GA | Evolutivo | `BaseGA` (`OriginalGA` no evoluciona en 3.0.3) | Sumado y documentado | `genetic_algorithm.md` |
 | 8 | ABC | Enjambre | `OriginalABC` | Sumado y documentado | `abc.md` |
-| 9 | ACO (continuo) | Enjambre | `OriginalACOR` | Pendiente | |
-| 10 | CMA-ES | Evolutivo | `CMA_ES` | Pendiente | |
+| 9 | ACO_R (ACO continuo) | Enjambre | `OriginalACOR` | Sumado y documentado | `aco.md` |
+| 10 | CMA-ES | Evolutivo | `CMA_ES` | Sumado y documentado; implementación con defectos graves | `cma_es.md` |
 | 11–15 | Por completar según la lista acordada | | | | |
 
 "Documentado" significa revisado contra el código de MEALPY 3.0.3; el contraste detallado con cada paper original queda como revisión pendiente.
@@ -70,3 +70,4 @@ Requiere las máquinas del laboratorio y el orquestador (Snakemake).
 | 3-nov | El Dr. Marrero fija la prioridad: módulo de algoritmos, uno por uno |
 | 9-nov | Pipeline corriendo en Colab (prueba rápida: 45/45 corridas OK) |
 | 10-nov | Calibración de épocas al presupuesto; punto de extensión para algoritmos externos; 8 métodos sumados, corridos (`configs/modulo_algoritmos.yaml`) y documentados; repositorio en GitHub compartido |
+| 16-nov | ACO_R y CMA-ES sumados, corridos y documentados (10 métodos). Se detecta que `CMA_ES` de MEALPY no usa la selección para mover la media |
