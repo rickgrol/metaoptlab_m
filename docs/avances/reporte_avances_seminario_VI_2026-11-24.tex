@@ -1,0 +1,391 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
+\usepackage{sectsty}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\allsectionsfont{\sffamily\bfseries}
+\makeatletter
+\renewcommand{\@seccntformat}[1]{\csname the#1\endcsname.\quad}
+\makeatother
+\linespread{1.08}
+\setlength{\parskip}{4pt}
+\setlist{itemsep=2pt,topsep=3pt}
+\captionsetup{font=small,labelfont=bf}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\graphicspath{{figuras/}}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries Optimización computacional quimioinspirada:\par}
+\vspace{4pt}
+{\large\bfseries Nuevas metaheurísticas derivadas de la estructura\\ y el plegamiento de proteínas\par}
+\vspace{14pt}
+{\large\bfseries Ricardo Guerrero Lara\qquad Yovani Marrero-Ponce\par}
+\vspace{6pt}
+Doctorado en Inteligencia Artificial, Universidad Panamericana, Ciudad de México, México\\[6pt]
+\texttt{rhguerrero@up.edu.mx}\\[8pt]
+\textit{Reporte de avances --- Seminario de Investigación VI, noviembre de 2026}
+\end{center}
+\vspace{2pt}
+\noindent\rule{\textwidth}{0.4pt}
+
+\begin{center}
+\begin{minipage}{0.86\textwidth}
+{\centering\textbf{Resumen}\par}\vspace{4pt}
+\small
+Este reporte presenta el avance del proyecto doctoral entre agosto y noviembre de 2026. En el periodo anterior fijamos un protocolo experimental del estilo CEC e implementamos tres algoritmos de referencia propios (SA, PSO y DE). En este periodo, a indicación del director, el primer artículo se redefinió como una caracterización comparativa masiva y por etapas de las metaheurísticas de la biblioteca MEALPY. Para ello construimos MetaOptLab-M, una plataforma experimental que agrega a MEALPY un presupuesto exacto por evaluaciones, la calibración del número de épocas, la configuración declarativa de experimentos, la ejecución reanudable y paralela, y un módulo de análisis estadístico no paramétrico. Probamos los 234 optimizadores de MEALPY~3.0.3 (204 utilizables sin observaciones) e integramos un conjunto de 15 métodos de referencia que cubre los principales paradigmas del área, más Random Search como línea base estocástica. La revisión del código mostró defectos en las implementaciones de CMA-ES, Tabu Search, ICA y ASO; en el caso de CMA-ES, corregir el defecto reduce el error en una esfera desplazada del orden de $10^{3}$ al de $10^{-14}$. Una prueba piloto con los 16 métodos (240 corridas, sin fallas) valida la plataforma y anticipa su comportamiento relativo. El reporte muestra además cómo este trabajo da continuidad a los cuatro objetivos planteados en el Coloquio Doctoral de junio de 2026.
+
+\vspace{6pt}
+\noindent\textbf{Palabras clave:} plegamiento de proteínas, metaheurísticas quimioinspiradas, optimización continua, benchmarking, MEALPY, pruebas no paramétricas.
+\end{minipage}
+\end{center}
+\noindent\rule{\textwidth}{0.4pt}
+
+\vspace{4pt}
+\noindent\begin{tabularx}{\textwidth}{@{}lX@{}}
+\textbf{Alumno} & Ricardo Hilario Guerrero Lara \\
+\textbf{Director de tesis} & Dr. Yovani Marrero Ponce \\
+\textbf{Seminario} & Seminario de Investigación VI (actividad RA1000 Proyecto de Investigación) \\
+\textbf{Periodo que se reporta} & Agosto a noviembre de 2026 \\
+\end{tabularx}
+
+%==================================================================
+\section{Introducción}
+
+El plegamiento de proteínas resuelve con gran eficiencia la búsqueda en un espacio conformacional astronómicamente grande, mediante procesos fisicoquímicos cooperativos. Pese a ello, este fenómeno sigue poco explorado como fuente de inspiración algorítmica. El punto de partida del proyecto es el modelo de Marrero-Ponce et al.~\cite{marrero2021}, que asocia las etapas del plegamiento con componentes de una metaheurística.
+
+\paragraph{Problema.} Pese a los avances en optimización inspirada en la naturaleza, no existe un modelo computacional sistemático que emule los mecanismos fisicoquímicos del plegamiento de proteínas para resolver problemas de optimización continua compleja, con el fundamento teórico y el rigor empírico que exige una publicación científica.
+
+\paragraph{Pregunta de investigación.} ¿El modelado computacional de la dinámica del plegamiento de proteínas (transiciones conformacionales, guía de chaperonas y regulación de la proteostasis) puede dar lugar a nuevas metaheurísticas con eficiencia, adaptabilidad y robustez superiores a las de los métodos clásicos en paisajes de prueba estandarizados?
+
+\paragraph{Hipótesis.} La abstracción sistemática de los principios fisicoquímicos del plegamiento de proteínas en operadores computacionales formalmente definidos produce algoritmos de optimización cuya eficiencia, adaptabilidad y robustez en funciones de prueba continuas estandarizadas superan a las de las metaheurísticas clásicas, de acuerdo con protocolos estadísticos no paramétricos rigurosos.
+
+\paragraph{Estrategia de publicación.} El primer artículo es una caracterización comparativa rigurosa del estado del arte, sin incluir todavía el algoritmo propio. Sus resultados serán la línea base fija contra la que se comparará el algoritmo quimioinspirado en el segundo artículo.
+
+%==================================================================
+\section{Continuidad con el periodo anterior}\label{sec:continuidad}
+
+En el periodo anterior, presentado en el Coloquio Doctoral del 11 de junio de 2026, fijamos el protocolo experimental antes de diseñar cualquier algoritmo e implementamos tres métodos de referencia propios (SA, PSO y DE) en la plataforma MetaOptLab, con una arquitectura de extensión en la que cada algoritmo hereda de una clase base común. El reporte del Coloquio cerró con cuatro objetivos planteados por el director para la siguiente etapa.
+
+En este periodo el director amplió el alcance del primer artículo: en lugar de caracterizar tres implementaciones propias, caracterizamos de forma masiva las metaheurísticas de MEALPY~\cite{mealpy2023}. El cambio amplía la batería de comparación y mantiene los principios del diseño anterior. La Tabla~\ref{tab:objetivos} resume cómo avanzó cada objetivo.
+
+\begin{table}[H]
+\centering
+\caption{Objetivos del Coloquio Doctoral (junio de 2026) y su avance en este periodo.}
+\label{tab:objetivos}
+\small
+\begin{tabularx}{\textwidth}{@{}L{3.6cm}L{3.4cm}X@{}}
+\toprule
+Objetivo & Estado en junio & Avance en este periodo \\
+\midrule
+1. Ampliar los algoritmos de referencia (meta inicial: alrededor de diez) & SA, PSO y DE implementados & 15 métodos de referencia y Random Search integrados y documentados; catálogo completo de MEALPY probado (204 de 234 utilizables sin observaciones). Los algoritmos campeones del CEC (L-SHADE y otros) quedan para después de los 15. \\
+\addlinespace
+2. Completar el módulo de reporte de corridas & Tablas y figuras en el cuaderno & Módulo de análisis separado de la ejecución: estadística descriptiva, error en los puntos del protocolo CEC y curvas de convergencia. \\
+\addlinespace
+3. Comparación estadística entre métodos & Planeada (Friedman, Wilcoxon y Bonferroni; después, comparación bayesiana) & Implementados Friedman con Iman-Davenport, diferencia crítica de Nemenyi, y Wilcoxon y Mann-Whitney con corrección de Holm. La comparación bayesiana~\cite{benavoli2017} sigue pendiente. \\
+\addlinespace
+4. Primer experimento y primer artículo & Corridas de SA, PSO y DE en $D=30$ & Rediseñado como la primera etapa de la caracterización masiva; prueba piloto con los 16 métodos completada (Sección~\ref{sec:piloto}). \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Lo que se conserva y lo que cambia}
+
+Se conservan los principios del protocolo: se fija antes que los algoritmos; el presupuesto se mide en evaluaciones de la función objetivo ($10\,000\cdot D$); se hacen 30 corridas con semillas fijas; la mediana es el indicador principal; el error se registra en puntos de control del presupuesto; y la comparación usa pruebas no paramétricas~\cite{derrac2011}. La idea de la clase base común continúa en el soporte para algoritmos externos de MetaOptLab-M, por donde entran EDA y Random Search con el mismo control de presupuesto.
+
+Cambian cuatro decisiones. Las implementaciones pasan a ser las de MEALPY, para que la comparación cubra cientos de métodos con un mismo código base. Las semillas dependen solo del número de corrida, de modo que todos los algoritmos parten de las mismas condiciones aleatorias. La corrección de Bonferroni se sustituye por la de Holm~\cite{holm1979}, que controla el mismo error con mayor potencia. Las 36 funciones de Ezugwu et al.~\cite{ezugwu2020} dan paso a 8--10 funciones en la primera etapa y después a suites completas del CEC, según el embudo de la Sección~\ref{sec:diseno}.
+
+\subsection{Resultados del periodo anterior}
+
+La Tabla~\ref{tab:coloquio} y la Figura~\ref{fig:coloquio} reproducen los resultados de nuestras implementaciones propias en siete funciones, con $D=30$, 30 corridas y $10\,000\cdot D$ evaluaciones. PSO resuelve las funciones unimodales y Ackley en todas las corridas; DE es el más consistente en Griewank; SA, aun con la temperatura inicial calibrada por función~\cite{benameur2004}, no alcanza el umbral de éxito en ninguna función con este presupuesto. Rosenbrock y Rastrigin no se resuelven con ningún método.
+
+\begin{table}[H]
+\centering
+\caption{Periodo anterior: mediana del error final de las implementaciones propias ($D=30$, 30 corridas). Entre paréntesis, corridas exitosas (error $\le 10^{-4}$). SA con temperatura inicial calibrada por función; PSO con $10\cdot D$ partículas, inercia de 0.9 a 0.4 y $c_1=c_2=2$; DE/rand/1/bin con $F=0.8$, $CR=0.9$ y 50 individuos.}
+\label{tab:coloquio}
+\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Función & SA & PSO & DE \\
+\midrule
+Sphere & $9.14\times10^{-3}$ (0) & $4.21\times10^{-9}$ (30) & $6.02\times10^{-8}$ (30) \\
+SumSquares & $2.31\times10^{-1}$ (0) & $7.58\times10^{-8}$ (30) & $3.74\times10^{-7}$ (30) \\
+Schwefel 2.22 & $3.27\times10^{5}$ (0) & $1.50\times10^{-6}$ (30) & $1.37\times10^{-4}$ (7) \\
+Rosenbrock & $2.51\times10^{1}$ (0) & $2.64\times10^{1}$ (0) & $1.71\times10^{1}$ (0) \\
+Rastrigin & $1.54\times10^{2}$ (0) & $2.31\times10^{1}$ (0) & $3.67\times10^{1}$ (0) \\
+Griewank & $2.15\times10^{-2}$ (0) & $1.23\times10^{-2}$ (6) & $2.84\times10^{-7}$ (28) \\
+Ackley & $1.86\times10^{1}$ (0) & $1.65\times10^{-5}$ (30) & $1.99\times10^{1}$ (1) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{fig_coloquio.pdf}
+\caption{Periodo anterior: distribución del error final de SA, PSO y DE en 30 corridas ($D=30$, escala logarítmica). La línea punteada marca el umbral de éxito $\varepsilon=10^{-4}$.}
+\label{fig:coloquio}
+\end{figure}
+
+Estos resultados no son comparables directamente con la prueba piloto de la Sección~\ref{sec:piloto}, que usa otra dimensión, otro presupuesto y otras funciones. Sirven como referencia para contrastar nuestras implementaciones con las de MEALPY en la primera etapa del experimento masivo. En particular, el SA propio calibra la temperatura inicial para cada función, algo que la versión de MEALPY no hace, lo que permitiría incorporarlo como algoritmo externo si el director lo considera justificado.
+
+%==================================================================
+\section{Diseño metodológico}\label{sec:diseno}
+
+\subsection{Caracterización masiva por etapas}
+
+En la sesión de trabajo del 20 de octubre de 2026 redefinimos el diseño del primer artículo como un embudo de cuatro etapas:
+\begin{enumerate}
+  \item Todos los algoritmos utilizables de MEALPY en 8--10 funciones, con 30 corridas; los que no corren se documentan con su motivo.
+  \item Los mejores, en una suite completa del CEC.
+  \item Una nueva selección, en tres suites del CEC.
+  \item Un núcleo final de 20--30 algoritmos, elegidos por desempeño y diversidad de operadores.
+\end{enumerate}
+
+El protocolo fija un presupuesto de $10\,000\cdot D$ evaluaciones, 30 corridas con semillas independientes y el registro del error en los puntos de control del protocolo CEC2017~\cite{cec2017}. Para la comparación adoptamos pruebas no paramétricas: Friedman con la corrección de Iman-Davenport y la diferencia crítica de Nemenyi~\cite{demsar2006} entre problemas, y Mann-Whitney y Wilcoxon con corrección de Holm por pares~\cite{derrac2011}.
+
+\subsection{Métodos de referencia}
+
+Con el director definimos 15 métodos que cubren los paradigmas y estrategias de búsqueda del área, más Random Search como línea base estocástica: un método de exploración pura que marca el desempeño mínimo que cualquier metaheurística debe superar. La Tabla~\ref{tab:metodos} lista los métodos, la implementación usada y la observación principal de la revisión de su código. Cada método tiene un documento propio en el repositorio con su variante, operadores, parámetros, costo por iteración y diferencias con el original.
+
+El estado del módulo de algoritmos es el siguiente: los 15 métodos y Random Search están integrados, corren bajo el protocolo de la plataforma y tienen una primera versión de su documento. Quedan pendientes el contraste de cada documento con su artículo original y la decisión, con el director, sobre las implementaciones con defectos; en la prueba piloto usamos todas las implementaciones de MEALPY sin modificar, y los resultados de las que tienen defectos se reportan señalándolo.
+
+\begin{table}[H]
+\centering
+\caption{Métodos de referencia, implementación usada y observación de la revisión.}
+\label{tab:metodos}
+\small
+\begin{tabularx}{\textwidth}{@{}lL{2.4cm}L{2.7cm}X@{}}
+\toprule
+Método & Paradigma & Implementación & Observación de la revisión \\
+\midrule
+Hill Climbing & Trayectoria & \texttt{OriginalHC} & Sin observaciones; referencia original por confirmar \\
+SA~\cite{kirkpatrick1983} & Trayectoria & \texttt{OriginalSA} & Diferencias de diseño respecto al original \\
+Tabu Search~\cite{glover1989} & Trayectoria & \texttt{OriginalTS} & Defecto: la lista tabú no actúa en variables continuas \\
+DE~\cite{storn1997} & Evolutivo & \texttt{OriginalDE} & Factor de escala $F=0.1$ por defecto \\
+GA~\cite{holland1975} & Evolutivo & \texttt{BaseGA} & \texttt{OriginalGA} no implementa la evolución \\
+CMA-ES~\cite{hansen2001} & Evolutivo & \texttt{CMA\_ES} & Defecto: la selección no influye en la media \\
+PSO~\cite{kennedy1995} & Enjambre & \texttt{OriginalPSO} & Selección codiciosa e inercia fija \\
+ACO~\cite{socha2008} & Enjambre & \texttt{OriginalACOR} & Diferencias de diseño respecto al original \\
+ABC~\cite{karaboga2007} & Enjambre & \texttt{OriginalABC} & Diferencias de diseño respecto al original \\
+GWO~\cite{mirjalili2014} & Enjambre & \texttt{OriginalGWO} & Agrega selección codiciosa \\
+TLBO~\cite{rao2011} & Social & \texttt{OriginalTLO} & Sin observaciones \\
+ICA~\cite{atashpaz2007} & Social & \texttt{OriginalICA} & Defecto: la población crece en cada época \\
+ASO~\cite{zhao2019} & Físico-químico & \texttt{OriginalASO} & Defecto: centro de masa escalar \\
+EDA~\cite{larranaga2002} & Probabilístico & Propia (UMDA$_c$) & No existe en MEALPY \\
+SCA~\cite{mirjalili2016} & Matemático & \texttt{OriginalSCA} & Agrega selección codiciosa \\
+\midrule
+Random Search & Línea base & Propia & No existe en MEALPY \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+%==================================================================
+\section{Plataforma experimental MetaOptLab-M}
+
+\subsection{Arquitectura}
+
+Construimos MetaOptLab-M sobre MEALPY (algoritmos) y opfunu~\cite{opfunu} (funciones CEC). El repositorio está en GitHub y es compartido con el director. La Figura~\ref{fig:arquitectura} muestra el flujo de un experimento. La plataforma aporta lo que MEALPY no incluye:
+\begin{itemize}
+  \item \textbf{Configuración declarativa:} cada experimento se describe en un archivo YAML (algoritmos, funciones, dimensiones, corridas, presupuesto).
+  \item \textbf{Presupuesto exacto:} un contador externo envuelve la función objetivo y corta la ejecución en la evaluación máxima, igual para todos los algoritmos, sin depender de cómo cada uno cuenta sus iteraciones.
+  \item \textbf{Calibración de épocas:} medimos las evaluaciones que cada algoritmo hace en la inicialización y en cada época, y fijamos el número de épocas para que el presupuesto termine junto con la última. Sin esta calibración, los parámetros que dependen del avance de la búsqueda (temperatura, inercia, coeficientes que decrecen) quedan distorsionados; en Hill Climbing, por ejemplo, el error bajó de 4\,503 a 161.
+  \item \textbf{Ejecución reanudable y paralela:} un archivo JSON por corrida, escrito de forma atómica; Snakemake reparte los bloques (algoritmo $\times$ función $\times$ dimensión) entre los núcleos disponibles.
+  \item \textbf{Análisis separado de la ejecución:} estadística descriptiva, pruebas no paramétricas, curvas de convergencia y controles de calidad (varianza cero, error negativo, evaluaciones fuera de límites y valores no finitos).
+  \item \textbf{Algoritmos externos:} se registran con el prefijo \texttt{externo:} y quedan sujetos al mismo control de presupuesto.
+\end{itemize}
+Verificamos que los resultados se reproducen de forma idéntica en máquinas distintas.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{fig_arquitectura.pdf}
+\caption{Flujo de un experimento en MetaOptLab-M.}
+\label{fig:arquitectura}
+\end{figure}
+
+\subsection{Prueba de funcionamiento del catálogo de MEALPY}
+
+Probamos los 234 optimizadores de MEALPY~3.0.3 con el script \texttt{prueba\_funcionamiento.py} del repositorio, de modo que la prueba puede reproducirse. Cada optimizador corre dos veces con la misma semilla, con el mismo ejecutor y el mismo control de presupuesto que los experimentos ($D=10$, $1\,000\cdot D$ evaluaciones, población de 50). La Tabla~\ref{tab:exclusiones} resume el resultado: 204 optimizadores son utilizables sin observaciones, 10 corren pero requieren una decisión y 20 quedan excluidos con su motivo documentado. Confirmamos además que MEALPY no incluye pruebas estadísticas, por lo que el módulo de análisis estadístico es una aportación de MetaOptLab-M.
+
+\begin{table}[H]
+\centering
+\caption{Resultado de la prueba de funcionamiento del catálogo de MEALPY~3.0.3.}
+\label{tab:exclusiones}
+\small
+\begin{tabularx}{\textwidth}{@{}L{5.6cm}cX@{}}
+\toprule
+Resultado & Número & Optimizadores \\
+\midrule
+Utilizables sin observaciones & 204 & \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textit{Requieren decisión}} \\
+Su número de evaluaciones por época varía y terminan antes del presupuesto (entre 56 y 99.9\,\%) & 10 & DMOA, EPC, EOA, EVO, HHO, IWO, SFO, SHO, WCA, SAP\_DE \\
+\addlinespace
+\multicolumn{3}{@{}l}{\textit{Excluidos}} \\
+Evalúan puntos fuera de los límites & 7 & FOA (3), TWO (3), ArchOA \\
+No son reproducibles con semilla fija & 6 & JADE, SHADE, L-SHADE, LSHADE-cnEpSin, PSS, AAO \\
+No pueden crearse con sus parámetros por defecto bajo este presupuesto & 5 & BCO, CHIO (2), HI\_WOA, OCRO \\
+No evolucionan después de la inicialización & 2 & OriginalGA, DS\_GWO \\
+\midrule
+Total & 234 & \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Dos resultados requieren atención. Los diez optimizadores con consumo variable sí evolucionan, pero el número de épocas calibrado no alcanza a agotar su presupuesto; hay que decidir si se ajusta la calibración para ellos o se reportan con el presupuesto que consumen. Y cuatro de los seis no reproducibles son variantes adaptativas de DE (JADE, SHADE, L-SHADE y LSHADE-cnEpSin), es decir, justamente los algoritmos campeones del CEC previstos como referencia positiva; antes de incorporarlos hay que identificar la fuente de aleatoriedad que no controla la semilla.
+
+\subsection{Funciones de prueba}
+
+Encontramos dos errores en las funciones CEC2017 de opfunu: su numeración está recorrida respecto a la oficial (la F$k$ de opfunu es la F$(k{+}1)$ oficial para $k\ge2$, de modo que \texttt{cec2017:F4} corresponde a Rastrigin desplazada y rotada) y la F9 produce valores por debajo de su óptimo declarado. Antes de la primera etapa del experimento masivo (Sección~\ref{sec:diseno}) validaremos las funciones contra el código oficial del CEC.
+
+%==================================================================
+\section{Revisión de las implementaciones}\label{sec:revision}
+
+Revisamos el código de las 15 implementaciones a partir de la formulación conocida de cada método; el contraste detallado con cada artículo original es la siguiente tarea (Sección~7). Esta primera revisión ya muestra que cuatro implementaciones tienen defectos que impiden que representen a su método:
+\begin{itemize}
+  \item \textbf{CMA-ES.} Los pasos con los que se actualiza la media se vuelven a muestrear antes de usarse, de modo que no son los que generaron a los mejores individuos: la selección no influye en la búsqueda y la media hace una caminata aleatoria. Hay además errores menores en la adaptación del tamaño de paso y en la normalización de los pesos.
+  \item \textbf{Tabu Search.} La lista tabú compara soluciones exactas de números reales; en variables continuas prácticamente nunca coinciden, así que la lista no actúa. El tamaño del paso es absoluto y no se escala al dominio.
+  \item \textbf{ICA.} Al transferir una colonia entre imperios, la colonia se duplica: la población crece en una colonia por época (de 45 a 145 en 100 épocas), las evaluaciones por época crecen con ella y los imperios nunca desaparecen.
+  \item \textbf{ASO.} El centro de masa de los mejores átomos se calcula como un escalar en lugar de un vector, por un promedio sin eje.
+\end{itemize}
+Además, \texttt{OriginalGA} no implementa el método de evolución, por lo que usamos \texttt{BaseGA}, y varios métodos difieren de su original en decisiones de diseño (Tabla~\ref{tab:metodos}).
+
+Para dimensionar el efecto del defecto de CMA-ES hicimos una prueba de diagnóstico: conservamos para cada individuo el paso que lo generó y muestreamos los pasos nuevos después de actualizar la media. Con las mismas semillas y el mismo presupuesto de la prueba piloto, el error final en la esfera desplazada pasa de una mediana de $3.2\times10^{3}$ a una de $1.6\times10^{-14}$ (Figura~\ref{fig:cmaes}). El defecto, por tanto, explica por completo el mal desempeño de CMA-ES en el piloto.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.62\textwidth]{fig_cmaes.pdf}
+\caption{Diagnóstico de CMA-ES en la esfera desplazada ($D=10$, $10\,000$ evaluaciones, 5 semillas). Líneas tenues: corridas individuales; líneas gruesas: mediana.}
+\label{fig:cmaes}
+\end{figure}
+
+%==================================================================
+\section{Prueba piloto}\label{sec:piloto}
+
+Corrimos una prueba piloto con los 16 métodos en su configuración por defecto (población de 50): 5 corridas, $D=10$, $1\,000\cdot D$ evaluaciones, sobre una esfera desplazada y dos funciones de CEC2017 en la numeración de opfunu (F1, Bent Cigar, y F4, Rastrigin). Las 240 corridas terminaron sin fallas. Su propósito es verificar la plataforma y anticipar el comportamiento de los métodos, no concluir sobre ellos.
+
+\begin{table}[H]
+\centering
+\caption{Prueba piloto: mediana del error final (5 corridas, $D=10$) y rango promedio de Friedman (menor es mejor).}
+\label{tab:piloto}
+\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Método & Esfera desplazada & cec2017:F1 & cec2017:F4 & Rango promedio \\
+\midrule
+TLBO & $1.35\times10^{-6}$ & $8.04\times10^{2}$ & $3.21\times10^{1}$ & 2.00 \\
+PSO & $7.01\times10^{-16}$ & $2.88\times10^{3}$ & $5.67\times10^{1}$ & 2.33 \\
+ACO (ACO$_R$) & $6.26\times10^{-3}$ & $2.95\times10^{5}$ & $4.89\times10^{1}$ & 3.67 \\
+EDA (UMDA$_c$) & $8.22\times10^{-8}$ & $1.33\times10^{8}$ & $4.99\times10^{0}$ & 4.33 \\
+GWO & $1.93\times10^{0}$ & $9.68\times10^{5}$ & $1.04\times10^{2}$ & 6.33 \\
+ABC & $4.39\times10^{-2}$ & $1.45\times10^{7}$ & $5.89\times10^{1}$ & 6.33 \\
+SA & $1.38\times10^{-2}$ & $1.43\times10^{4}$ & $1.82\times10^{3}$ & 6.67 \\
+GA & $5.89\times10^{0}$ & $5.99\times10^{6}$ & $8.54\times10^{1}$ & 7.33 \\
+ICA & $2.13\times10^{0}$ & $1.93\times10^{6}$ & $1.88\times10^{2}$ & 7.67 \\
+SCA & $2.70\times10^{1}$ & $7.41\times10^{7}$ & $1.32\times10^{2}$ & 9.00 \\
+Hill Climbing & $1.61\times10^{2}$ & $1.94\times10^{8}$ & $3.13\times10^{2}$ & 10.67 \\
+DE & $7.01\times10^{2}$ & $1.35\times10^{9}$ & $1.56\times10^{3}$ & 11.67 \\
+ASO & $2.27\times10^{3}$ & $2.53\times10^{9}$ & $3.00\times10^{3}$ & 13.00 \\
+Tabu Search & $3.39\times10^{3}$ & $4.19\times10^{9}$ & $7.26\times10^{3}$ & 14.33 \\
+CMA-ES & $3.21\times10^{3}$ & $8.43\times10^{9}$ & $8.57\times10^{3}$ & 15.33 \\
+Random Search & $6.08\times10^{3}$ & $6.05\times10^{9}$ & $8.05\times10^{3}$ & 15.33 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La Tabla~\ref{tab:piloto} resume los resultados y las Figuras~\ref{fig:convergencia} y~\ref{fig:cajas} muestran la convergencia y la distribución del error. Destacan cuatro observaciones:
+\begin{itemize}
+  \item TLBO y PSO encabezan el ordenamiento en las tres funciones; PSO alcanza la precisión de máquina en la esfera.
+  \item EDA converge más rápido que todos en Rastrigin (F4), pero se estanca en Bent Cigar (F1), probablemente porque la función está rotada y mal condicionada, y su modelo trata cada dimensión por separado.
+  \item Los cuatro métodos con defectos quedan en la mitad inferior: ASO, Tabu Search y CMA-ES ocupan los lugares 13 a 15, junto a Random Search, e ICA el 9.
+  \item DE queda en el lugar 12, muy lejos de su desempeño en el periodo anterior; es consistente con el factor de escala $F=0.1$ que MEALPY usa por defecto, frente a valores de 0.5 a 0.9 habituales en la literatura.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{fig_convergencia.pdf}
+\caption{Prueba piloto: mediana del mejor error contra evaluaciones (5 corridas, $D=10$, escalas logarítmicas). Se muestran los cuatro mejores métodos, SA, DE, CMA-ES y Random Search; las curvas de los 16 métodos las genera el módulo de análisis de la plataforma.}
+\label{fig:convergencia}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{fig_cajas.pdf}
+\caption{Prueba piloto: distribución del error final por método (5 corridas, $D=10$, escala logarítmica), ordenada por rango promedio de Friedman.}
+\label{fig:cajas}
+\end{figure}
+
+La prueba de Friedman detecta diferencias globales (Iman-Davenport, $p\approx 9\times10^{-10}$). Con 16 métodos y solo 3 funciones, sin embargo, la diferencia crítica de Nemenyi es de 13.3 rangos (Figura~\ref{fig:cd}), por lo que solo los extremos del ordenamiento se distinguen entre sí. La primera etapa del experimento, con 30 corridas y 8--10 funciones, dará la potencia necesaria para conclusiones por pares.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{fig_cd.pdf}
+\caption{Prueba piloto: rangos promedio de Friedman y diferencia crítica (CD) de Nemenyi ($\alpha=0.05$, 3 funciones).}
+\label{fig:cd}
+\end{figure}
+
+%==================================================================
+\section{Siguientes pasos}
+
+\begin{enumerate}
+  \item Contrastar la documentación de cada método con su artículo original.
+  \item Decidir, con el director, cómo tratar las implementaciones con defectos (corregirlas, sustituirlas por implementaciones de referencia o reportarlas a los autores de MEALPY) y los parámetros por defecto que difieren de los artículos.
+  \item Validar las funciones de opfunu contra el código oficial del CEC.
+  \item Ejecutar la primera etapa del experimento masivo (todos los algoritmos utilizables en 8--10 funciones, 30 corridas) en los equipos del laboratorio, y redactar sus resultados.
+  \item Revisión sistemática de literatura sobre comparaciones masivas de metaheurísticas.
+\end{enumerate}
+
+Después de la caracterización desarrollaremos el algoritmo quimioinspirado a partir del modelo de Marrero-Ponce et al.~\cite{marrero2021}, con el diseño de operadores que definamos con el director, y lo evaluaremos con el mismo protocolo, sobre la misma plataforma, contra el estado del arte caracterizado.
+
+%==================================================================
+\section{Conclusiones}
+
+En este periodo convertimos los cuatro objetivos del Coloquio en una infraestructura de mayor escala. La batería de comparación pasó de tres implementaciones propias a 15 métodos de referencia sobre una biblioteca cuyo catálogo completo probamos (204 de 234 algoritmos utilizables sin observaciones), con control exacto del presupuesto, análisis estadístico no paramétrico y ejecución reproducible. La revisión del código mostró que usar una biblioteca no exime de verificar sus implementaciones: cuatro de los 15 métodos tienen defectos que cambian su desempeño en órdenes de magnitud, un hallazgo relevante para cualquier comparación masiva basada en MEALPY. La prueba piloto valida la plataforma y deja listo el experimento de la primera etapa.
+
+%==================================================================
+\begin{thebibliography}{99}
+\small
+\bibitem{marrero2021} Y.~Marrero-Ponce, Y.~B.~Ruiz-Blanco, Y.~Echevarría, F.~Martinez-Rios, R.~Bello, C.~Morell y R.~Vivas-Reyes, ``Expanding the current boundaries of nature-based modeling and computing: Chem-inspiration for meta-heuristics,'' \emph{ChemRxiv}, preprint, 2021. \url{https://doi.org/10.26434/chemrxiv-2021-k7ghz}
+\bibitem{mealpy2023} N.~Van~Thieu y S.~Mirjalili, ``MEALPY: An open-source library for latest meta-heuristic algorithms in Python,'' \emph{Journal of Systems Architecture}, vol.~139, p.~102871, 2023.
+\bibitem{opfunu} N.~V.~Thieu, ``A collection of the state-of-the-art metaheuristics algorithms in Python: Opfunu library,'' \emph{Journal of Open Source Software}, 2022.
+\bibitem{ezugwu2020} A.~E.~Ezugwu et al., ``A conceptual comparison of several metaheuristic algorithms on continuous optimisation problems,'' \emph{Neural Computing and Applications}, vol.~32, pp.~6207--6251, 2020.
+\bibitem{cec2017} N.~H.~Awad, M.~Z.~Ali, J.~J.~Liang, B.~Y.~Qu y P.~N.~Suganthan, ``Problem definitions and evaluation criteria for the CEC 2017 special session and competition on single objective bound constrained real-parameter numerical optimization,'' reporte técnico, Nanyang Technological University, 2016.
+\bibitem{derrac2011} J.~Derrac, S.~García, D.~Molina y F.~Herrera, ``A practical tutorial on the use of nonparametric statistical tests as a methodology for comparing evolutionary and swarm intelligence algorithms,'' \emph{Swarm and Evolutionary Computation}, vol.~1, núm.~1, pp.~3--18, 2011.
+\bibitem{demsar2006} J.~Demšar, ``Statistical comparisons of classifiers over multiple data sets,'' \emph{Journal of Machine Learning Research}, vol.~7, pp.~1--30, 2006.
+\bibitem{holm1979} S.~Holm, ``A simple sequentially rejective multiple test procedure,'' \emph{Scandinavian Journal of Statistics}, vol.~6, núm.~2, pp.~65--70, 1979.
+\bibitem{benavoli2017} A.~Benavoli, G.~Corani, J.~Demšar y M.~Zaffalon, ``Time for a change: a tutorial for comparing multiple classifiers through Bayesian analysis,'' \emph{Journal of Machine Learning Research}, vol.~18, núm.~77, pp.~1--36, 2017.
+\bibitem{benameur2004} W.~Ben-Ameur, ``Computing the initial temperature of simulated annealing,'' \emph{Computational Optimization and Applications}, vol.~29, pp.~369--385, 2004.
+\bibitem{kirkpatrick1983} S.~Kirkpatrick, C.~D.~Gelatt y M.~P.~Vecchi, ``Optimization by simulated annealing,'' \emph{Science}, vol.~220, núm.~4598, pp.~671--680, 1983.
+\bibitem{glover1989} F.~Glover, ``Tabu search---Part I,'' \emph{ORSA Journal on Computing}, vol.~1, núm.~3, pp.~190--206, 1989.
+\bibitem{storn1997} R.~Storn y K.~Price, ``Differential evolution---a simple and efficient heuristic for global optimization over continuous spaces,'' \emph{Journal of Global Optimization}, vol.~11, pp.~341--359, 1997.
+\bibitem{holland1975} J.~H.~Holland, \emph{Adaptation in Natural and Artificial Systems}. Ann Arbor: University of Michigan Press, 1975.
+\bibitem{hansen2001} N.~Hansen y A.~Ostermeier, ``Completely derandomized self-adaptation in evolution strategies,'' \emph{Evolutionary Computation}, vol.~9, núm.~2, pp.~159--195, 2001.
+\bibitem{kennedy1995} J.~Kennedy y R.~Eberhart, ``Particle swarm optimization,'' en \emph{Proc. IEEE ICNN}, pp.~1942--1948, 1995.
+\bibitem{socha2008} K.~Socha y M.~Dorigo, ``Ant colony optimization for continuous domains,'' \emph{European Journal of Operational Research}, vol.~185, núm.~3, pp.~1155--1173, 2008.
+\bibitem{karaboga2007} D.~Karaboga y B.~Basturk, ``A powerful and efficient algorithm for numerical function optimization: artificial bee colony (ABC) algorithm,'' \emph{Journal of Global Optimization}, vol.~39, núm.~3, pp.~459--471, 2007.
+\bibitem{mirjalili2014} S.~Mirjalili, S.~M.~Mirjalili y A.~Lewis, ``Grey wolf optimizer,'' \emph{Advances in Engineering Software}, vol.~69, pp.~46--61, 2014.
+\bibitem{rao2011} R.~V.~Rao, V.~J.~Savsani y D.~P.~Vakharia, ``Teaching--learning-based optimization: A novel method for constrained mechanical design optimization problems,'' \emph{Computer-Aided Design}, vol.~43, núm.~3, pp.~303--315, 2011.
+\bibitem{atashpaz2007} E.~Atashpaz-Gargari y C.~Lucas, ``Imperialist competitive algorithm: An algorithm for optimization inspired by imperialistic competition,'' en \emph{Proc. IEEE CEC}, pp.~4661--4667, 2007.
+\bibitem{zhao2019} W.~Zhao, L.~Wang y Z.~Zhang, ``Atom search optimization and its application to solve a hydrogeologic parameter estimation problem,'' \emph{Knowledge-Based Systems}, vol.~163, pp.~283--304, 2019.
+\bibitem{larranaga2002} P.~Larrañaga y J.~A.~Lozano (eds.), \emph{Estimation of Distribution Algorithms: A New Tool for Evolutionary Computation}. Boston: Kluwer, 2002.
+\bibitem{mirjalili2016} S.~Mirjalili, ``SCA: A sine cosine algorithm for solving optimization problems,'' \emph{Knowledge-Based Systems}, vol.~96, pp.~120--133, 2016.
+\end{thebibliography}
+
+\end{document}

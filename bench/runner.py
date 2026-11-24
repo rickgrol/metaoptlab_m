@@ -32,17 +32,26 @@ def medir_evaluaciones(cls, params, pop, lb, ub, dim, f, semilla):
     Así se puede fijar el número de épocas que cabe exactamente en el presupuesto.
     """
     from mealpy import FloatVar
-    conteos = []
-    for ep in (1, 3):
-        c = Tracker(f, 0.0, lb, ub, max_fe=10**12)
-        m = cls(epoch=ep, pop_size=pop, **params)
-        prob = {"obj_func": c, "bounds": FloatVar(lb=[lb] * dim, ub=[ub] * dim),
-                "minmax": "min", "log_to": None}
-        c.reset()
-        m.solve(prob, mode="single", seed=semilla)
-        conteos.append(c.n)
-    por_epoca = (conteos[1] - conteos[0]) / 2
-    return max(0, conteos[0] - por_epoca), por_epoca
+
+    def contar(epocas):
+        conteos = []
+        for ep in epocas:
+            c = Tracker(f, 0.0, lb, ub, max_fe=10**12)
+            m = cls(epoch=ep, pop_size=pop, **params)
+            prob = {"obj_func": c, "bounds": FloatVar(lb=[lb] * dim, ub=[ub] * dim),
+                    "minmax": "min", "log_to": None}
+            c.reset()
+            m.solve(prob, mode="single", seed=semilla)
+            conteos.append(c.n)
+        por_epoca = (conteos[1] - conteos[0]) / (epocas[1] - epocas[0])
+        return max(0, conteos[0] - epocas[0] * por_epoca), por_epoca
+
+    try:
+        return contar((1, 3))
+    except Exception:
+        # Algunos algoritmos validan parámetros contra el número de épocas (p. ej.,
+        # max_age en [1, epoch]) o dividen entre epoch - 1, y no admiten 1 época.
+        return contar((10, 20))
 
 
 def ruta_resultado(cfg, tarea):
