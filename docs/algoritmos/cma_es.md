@@ -59,7 +59,7 @@ Es el representante de los métodos que **aprenden un modelo de distribución**:
 |:--|:--|:--|
 | 3.210e+03 | 8.432e+09 | 8.569e+03 |
 
-Último lugar del ranking de Friedman entre los diez métodos (rango promedio 9.67), **por debajo de Random Search**, lo que es coherente con el defecto del punto 7.1.
+Empatado en el último lugar de 16 en el ranking de Friedman con Random Search (rango promedio 15.3), y con errores mayores que Random Search en dos de las tres funciones, lo que es coherente con el defecto del punto 7.1.
 
 ## 10. Dudas pendientes
 - `CMA_ES` de MEALPY no puede usarse tal cual en el estudio. Opciones: (a) corregirla y documentar la corrección; (b) sustituirla por una implementación de referencia (la biblioteca `cma` de Hansen) como algoritmo externo; (c) reportar el defecto a los autores de MEALPY.

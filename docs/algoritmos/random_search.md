@@ -27,4 +27,4 @@ Una evaluación por iteración; no tiene inicialización aparte.
 |:--|:--|:--|
 | 6.081e+03 | 6.048e+09 | 8.049e+03 |
 
-Quedó en el último lugar del ranking de Friedman entre los ocho métodos (rango promedio 8.0), como se espera de una referencia de azar.
+Quedó en el último lugar del ranking de Friedman entre los 16 métodos (rango promedio 15.3, empatado con CMA-ES), como se espera de una referencia de azar.

@@ -1,8 +1,8 @@
-# Módulo de algoritmos: los métodos básicos sumados hasta ahora, en su versión básica.
+# Módulo de algoritmos: los 15 métodos básicos acordados, en su versión básica, más Random Search.
 # Prueba reducida (5 corridas, D = 10, 1 000·D evaluaciones) para revisar y documentar.
 experimento: modulo_algoritmos
 algoritmos:
-  - externo:RandomSearch    # referencia (no existe en MEALPY)
+  - externo:RandomSearch    # baseline estocástico (no es metaheurística; no existe en MEALPY)
   - OriginalHC              # Hill Climbing
   - OriginalSA              # SA (Simulated Annealing)
   - OriginalTLO             # TLBO
@@ -12,6 +12,12 @@ algoritmos:
   - OriginalABC             # Colonia Artificial de Abejas
   - OriginalACOR            # ACO para dominios continuos (ACO_R)
   - CMA_ES                  # Estrategia Evolutiva con Adaptación de la Matriz de Covarianza
+  - OriginalTS              # Tabu Search
+  - OriginalASO             # Atom Search Optimization
+  - OriginalGWO             # Grey Wolf Optimizer
+  - externo:EDA             # Estimation of Distribution Algorithm, UMDA_c (no existe en MEALPY)
+  - OriginalICA             # Imperialist Competitive Algorithm
+  - OriginalSCA             # Sine Cosine Algorithm
 funciones: ["builtin:esfera_desplazada", "cec2017:F1", "cec2017:F4"]
 dimensiones: [10]
 corridas: 5

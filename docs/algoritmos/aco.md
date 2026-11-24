@@ -55,7 +55,7 @@ Comparte con CMA-ES la idea de **muestrear de un modelo probabilístico** que se
 |:--|:--|:--|
 | 6.258e−03 | 2.949e+05 | 4.888e+01 |
 
-Tercer lugar del ranking de Friedman entre los diez métodos (rango promedio 3.0).
+Lugar 3 de 16 en el ranking de Friedman (rango promedio 3.7), detrás de TLBO y PSO.
 
 ## 10. Dudas pendientes
 - ¿Usamos los parámetros por defecto de MEALPY o los del paper (k = 50, m = 2, q = 10⁻⁴, ξ = 0.85)?

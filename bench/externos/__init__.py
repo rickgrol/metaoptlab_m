@@ -5,5 +5,6 @@ Cada clase recibe la función objetivo ya envuelta por el Tracker, de modo que c
 con el mismo contador de evaluaciones y el mismo presupuesto que los de MEALPY.
 """
 from .random_search import RandomSearch
+from .eda import EDA
 
-EXTERNOS = {"RandomSearch": RandomSearch}
+EXTERNOS = {"RandomSearch": RandomSearch, "EDA": EDA}

@@ -102,7 +102,7 @@ def _ejecutar_externo(cfg, tarea, destino, f, lb, ub, tr, params, reg, t0):
     from .externos import EXTERNOS
     nombre = tarea.algoritmo.split(":", 1)[1]
     try:
-        alg = EXTERNOS[nombre](**params)
+        alg = EXTERNOS[nombre](pop_size=reg["pop_size"], **params)
         tr.reset()
         try:
             alg.solve(tr, lb, ub, tarea.dim, reg["semilla"])

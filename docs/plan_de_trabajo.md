@@ -11,7 +11,7 @@ Este plan ordena el trabajo según las indicaciones del Dr. Marrero en las sesio
 - **Implementaciones de MEALPY:** de cada método se usa su versión básica. Una implementación externa solo se usa cuando el método no existe en MEALPY o cuando la de MEALPY tiene problemas serios, y en ambos casos se justifica.
 - **Conocer la variante:** de cada método hay que saber qué variante se toma y qué implementa.
 
-## Fase 1. Módulo de algoritmos (en curso)
+## Fase 1. Módulo de algoritmos (15 métodos sumados; contraste con papers en curso)
 
 ### Procedimiento por método
 
@@ -22,23 +22,28 @@ Este plan ordena el trabajo según las indicaciones del Dr. Marrero en las sesio
 
 ### Seguimiento
 
-La lista de los 15 métodos se confirma contra la que envió el Dr. Marrero; la tabla incluye los identificados en la sesión del 22 de septiembre.
+Lista de los 15 métodos acordada con el Dr. Marrero (sesión del 22 de septiembre de 2026), con su numeración, más Random Search como baseline estocástico.
 
-| # | Método | Familia | Clase en MEALPY | Estado | Documento |
+| # | Método | Paradigma | Clase usada | Estado | Documento |
 |:-:|:--|:--|:--|:--|:--|
-| 1 | Random Search | Referencia (no es metaheurística) | Implementación propia (`externo:RandomSearch`) | Sumado y documentado | `random_search.md` |
-| 2 | Hill Climbing | Trayectoria | `OriginalHC` | Sumado y documentado | `hill_climbing.md` |
-| 3 | SA (Simulated Annealing) | Trayectoria | `OriginalSA` | Sumado y documentado | `simulated_annealing.md` |
+| 1 | SA (Simulated Annealing) | Trayectoria | `OriginalSA` | Sumado y documentado | `simulated_annealing.md` |
+| 2 | DE | Evolutivo | `OriginalDE` | Sumado y documentado | `differential_evolution.md` |
+| 3 | PSO | Enjambre | `OriginalPSO` | Sumado y documentado | `pso.md` |
 | 4 | TLBO | Social / humano | `OriginalTLO` | Sumado y documentado | `tlbo.md` |
-| 5 | PSO | Enjambre | `OriginalPSO` | Sumado y documentado | `pso.md` |
-| 6 | DE | Evolutivo | `OriginalDE` | Sumado y documentado | `differential_evolution.md` |
-| 7 | GA | Evolutivo | `BaseGA` (`OriginalGA` no evoluciona en 3.0.3) | Sumado y documentado | `genetic_algorithm.md` |
-| 8 | ABC | Enjambre | `OriginalABC` | Sumado y documentado | `abc.md` |
-| 9 | ACO_R (ACO continuo) | Enjambre | `OriginalACOR` | Sumado y documentado | `aco.md` |
-| 10 | CMA-ES | Evolutivo | `CMA_ES` | Sumado y documentado; implementación con defectos graves | `cma_es.md` |
-| 11–15 | Por completar según la lista acordada | | | | |
+| 5 | GA | Evolutivo | `BaseGA` (`OriginalGA` no evoluciona en 3.0.3) | Sumado y documentado | `genetic_algorithm.md` |
+| 6 | Tabu Search | Trayectoria con memoria | `OriginalTS` | Sumado y documentado; lista tabú sin efecto en continuo | `tabu_search.md` |
+| 7 | ACO | Constructivo (ACO_R para continuo) | `OriginalACOR` | Sumado y documentado | `aco.md` |
+| 8 | ASO | Físico / químico | `OriginalASO` | Sumado y documentado; error en el centro de masa | `aso.md` |
+| 9 | CMA-ES | Evolutivo (estrategia evolutiva) | `CMA_ES` | Sumado y documentado; implementación con defectos graves | `cma_es.md` |
+| 10 | ABC | Enjambre | `OriginalABC` | Sumado y documentado | `abc.md` |
+| 11 | GWO | Enjambre | `OriginalGWO` | Sumado y documentado | `gwo.md` |
+| 12 | EDA | Probabilístico | Implementación propia, UMDA_c (`externo:EDA`) | Sumado y documentado | `eda.md` |
+| 13 | Hill Climbing | Trayectoria local | `OriginalHC` | Sumado y documentado | `hill_climbing.md` |
+| 14 | ICA | Social | `OriginalICA` | Sumado y documentado; la población crece cada época | `ica.md` |
+| 15 | SCA | Matemático / oscilaciones | `OriginalSCA` | Sumado y documentado | `sca.md` |
+| — | Random Search | Baseline estocástico (no es metaheurística; 100 % exploración) | Implementación propia (`externo:RandomSearch`) | Sumado y documentado | `random_search.md` |
 
-"Documentado" significa revisado contra el código de MEALPY 3.0.3; el contraste detallado con cada paper original queda como revisión pendiente.
+"Documentado" significa revisado contra el código de MEALPY 3.0.3 (o contra la implementación propia); el contraste detallado con cada paper original queda como revisión pendiente.
 
 **Algoritmos campeones de competencias CEC** (referencia positiva, después de los 15): MEALPY incluye `L_SHADE`, `OriginalLSHADEcnEpSin` e `OriginalIMODE`. Se revisarán con el mismo procedimiento.
 
@@ -71,3 +76,4 @@ Requiere las máquinas del laboratorio y el orquestador (Snakemake).
 | 9-nov | Pipeline corriendo en Colab (prueba rápida: 45/45 corridas OK) |
 | 10-nov | Calibración de épocas al presupuesto; punto de extensión para algoritmos externos; 8 métodos sumados, corridos (`configs/modulo_algoritmos.yaml`) y documentados; repositorio en GitHub compartido |
 | 16-nov | ACO_R y CMA-ES sumados, corridos y documentados (10 métodos). Se detecta que `CMA_ES` de MEALPY no usa la selección para mover la media |
+| 17-nov | Tabu Search, ASO, GWO, ICA y SCA (MEALPY) y EDA (implementación propia, UMDA_c) sumados, corridos y documentados: 15 métodos completos más Random Search |
