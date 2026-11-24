@@ -18,13 +18,13 @@ Uso:
   python prueba_funcionamiento.py --solo OriginalPSO OriginalDE
   python prueba_funcionamiento.py --procesos 4 --timeout 180
 
-Salida: resultados/prueba_funcionamiento/catalogo.csv y resumen.md
+Salida: docs/prueba_funcionamiento/catalogo.csv y resumen.md
 """
 import argparse, csv, json, subprocess, sys, time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-SALIDA = Path("resultados/prueba_funcionamiento")
+SALIDA = Path("docs/prueba_funcionamiento")
 FUNCION, DIM, FE_POR_DIM, POP = "builtin:esfera_desplazada", 10, 1000, 50
 
 TRABAJADOR = r"""

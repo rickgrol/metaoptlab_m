@@ -1,0 +1,235 @@
+algoritmo,categoria,detalle,tiempo_s
+AAO,no_reproducible,8191.91 vs 8630.84,3.0
+ABFO,utilizable,,1.8
+AIW_PSO,utilizable,,3.8
+AdaptiveBA,utilizable,,3.9
+AdaptiveEO,utilizable,,4.4
+AugmentedAEO,utilizable,,2.6
+BaseGA,utilizable,,3.0
+CG_GWO,utilizable,,2.2
+CL_PSO,utilizable,,3.7
+CMA_ES,utilizable,,4.7
+C_PSO,utilizable,,2.1
+ChaoticGWO,utilizable,,2.8
+CleverBookBeesA,utilizable,,2.0
+DS_GWO,no_evoluciona,usa 50 de 10000 evaluaciones,3.3
+DevALO,utilizable,,6.4
+DevBA,utilizable,,2.1
+DevBBO,utilizable,,3.0
+DevBRO,utilizable,,2.3
+DevCHIO,no_se_puede_crear,"ValueError: 'max_age' is an integer and value should be in range: [1, 3].",1.4
+DevDMOA,consumo_variable,usa 9000 de 10000 evaluaciones: sus evaluaciones por época varían y termina antes del presupuesto,2.4
+DevEFO,utilizable,,2.2
+DevEPC,consumo_variable,usa 9553 de 10000 evaluaciones: sus evaluaciones por época varían y termina antes del presupuesto,3.3
+DevFBIO,utilizable,,2.4
+DevFOA,fuera_de_limites,44 evaluaciones fuera de límites,3.4
+DevFOX,utilizable,,1.9
+DevGCO,utilizable,,2.6
+DevGSKA,utilizable,,2.4
+DevHS,utilizable,,2.3
+DevJA,utilizable,,2.1
+DevLCO,utilizable,,2.0
+DevMVO,utilizable,,3.1
+DevQSA,utilizable,,2.3
+DevSARO,utilizable,,3.1
+DevSBO,utilizable,,3.1
+DevSCA,utilizable,,2.6
+DevSMA,utilizable,,3.1
+DevSMO,utilizable,,2.4
+DevSOA,utilizable,,2.5
+DevSPBO,utilizable,,2.1
+DevSSA,utilizable,,2.5
+DevTLO,utilizable,,2.8
+DevTPO,utilizable,,2.1
+DevVCS,utilizable,,2.4
+ER_GWO,utilizable,,2.6
+EliteMultiGA,utilizable,,4.4
+EliteSingleGA,utilizable,,3.9
+EnhancedAEO,utilizable,,2.2
+EnhancedTWO,fuera_de_limites,40 evaluaciones fuera de límites,3.4
+ExGWO,utilizable,,2.2
+FuzzyGWO,utilizable,,2.8
+GWO_WOA,utilizable,,2.6
+GaussianSA,utilizable,,3.6
+HI_WOA,no_se_puede_crear,"ValueError: 'feedback_max' is an integer and value should be in range: [2, 7].",1.3
+HPSO_TVAC,utilizable,,2.4
+IARO,utilizable,,2.9
+IGWO,utilizable,,2.5
+IOBL_GWO,utilizable,,2.4
+ImprovedAEO,utilizable,,2.3
+ImprovedBSO,utilizable,,2.5
+ImprovedLCO,utilizable,,2.3
+ImprovedNMRA,utilizable,,2.5
+ImprovedQSA,utilizable,,2.5
+ImprovedSFO,utilizable,,2.1
+ImprovedSLO,utilizable,,2.0
+ImprovedTLO,utilizable,,2.6
+IncrementalGWO,utilizable,,2.9
+JADE,no_reproducible,8.26406e-08 vs 3.83362e-09,4.2
+LARO,utilizable,,3.2
+LDW_PSO,utilizable,,2.1
+L_SHADE,no_reproducible,1.07855e-09 vs 8.6139e-11,3.9
+LevyEP,utilizable,,2.2
+LevyES,utilizable,,2.6
+LevyJA,utilizable,,2.3
+LevyQSA,utilizable,,2.3
+LevyTWO,fuera_de_limites,180 evaluaciones fuera de límites,4.8
+MGTO,utilizable,,2.4
+Matlab101GTO,utilizable,,3.1
+Matlab102GTO,utilizable,,2.1
+ModifiedAEO,utilizable,,2.1
+ModifiedEO,utilizable,,2.2
+ModifiedSLO,utilizable,,2.1
+MultiGA,utilizable,,3.5
+OCRO,no_se_puede_crear,"ValueError: 'restart_count' is an integer and value should be in range: [2, 5].",1.3
+OGWO,utilizable,,2.7
+OppoQSA,utilizable,,2.1
+OppoTWO,fuera_de_limites,2768 evaluaciones fuera de límites,4.3
+OriginalABC,utilizable,,2.8
+OriginalACOR,utilizable,,7.7
+OriginalAEO,utilizable,,2.1
+OriginalAFT,utilizable,,2.0
+OriginalAGTO,utilizable,,2.1
+OriginalALO,utilizable,,8.6
+OriginalAO,utilizable,,3.3
+OriginalAOA,utilizable,,2.2
+OriginalARO,utilizable,,3.0
+OriginalASO,utilizable,,5.5
+OriginalAVOA,utilizable,,2.6
+OriginalArchOA,fuera_de_limites,7551 evaluaciones fuera de límites,2.3
+OriginalBA,utilizable,,2.1
+OriginalBBO,utilizable,,3.0
+OriginalBBOA,utilizable,,2.1
+OriginalBCO,no_se_puede_crear,"ValueError: 'n_chemotaxis' is an integer and value should be in range: (1, 5).",1.4
+OriginalBES,utilizable,,2.1
+OriginalBFO,utilizable,,5.0
+OriginalBMO,utilizable,,1.8
+OriginalBRO,utilizable,,2.6
+OriginalBSA,utilizable,,2.7
+OriginalBSO,utilizable,,2.6
+OriginalBeesA,utilizable,,2.5
+OriginalCA,utilizable,,2.5
+OriginalCDDO,utilizable,,2.1
+OriginalCDO,utilizable,,2.6
+OriginalCEM,utilizable,,2.1
+OriginalCGO,utilizable,,2.4
+OriginalCHIO,no_se_puede_crear,"ValueError: 'max_age' is an integer and value should be in range: [1, 3].",1.5
+OriginalCOA,utilizable,,2.4
+OriginalCRO,utilizable,,2.9
+OriginalCSA,utilizable,,2.3
+OriginalCSO,utilizable,,2.6
+OriginalCircleSA,utilizable,,1.9
+OriginalCoatiOA,utilizable,,1.7
+OriginalDE,utilizable,,2.3
+OriginalDMOA,utilizable,,2.4
+OriginalDO,utilizable,,4.6
+OriginalEFO,utilizable,,4.5
+OriginalEHO,utilizable,,2.2
+OriginalEO,utilizable,,3.2
+OriginalEOA,consumo_variable,usa 9994 de 10000 evaluaciones: sus evaluaciones por época varían y termina antes del presupuesto,2.3
+OriginalEP,utilizable,,2.4
+OriginalES,utilizable,,2.5
+OriginalESO,utilizable,,2.3
+OriginalESOA,utilizable,,2.1
+OriginalEVO,consumo_variable,usa 8814 de 10000 evaluaciones: sus evaluaciones por época varían y termina antes del presupuesto,3.3
+OriginalFA,utilizable,,2.4
+OriginalFBIO,utilizable,,3.2
+OriginalFDO,utilizable,,3.0
+OriginalFFA,utilizable,,2.9
+OriginalFFO,utilizable,,2.2
+OriginalFLA,utilizable,,2.2
+OriginalFOA,fuera_de_limites,44 evaluaciones fuera de límites,2.9
+OriginalFOX,utilizable,,2.0
+OriginalFPA,utilizable,,2.5
+OriginalGA,no_evoluciona,usa 50 de 10000 evaluaciones,3.0
+OriginalGBO,utilizable,,4.1
+OriginalGCO,utilizable,,3.0
+OriginalGJO,utilizable,,2.4
+OriginalGOA,utilizable,,11.8
+OriginalGSKA,utilizable,,6.7
+OriginalGTO,utilizable,,2.1
+OriginalGWO,utilizable,,2.5
+OriginalHBA,utilizable,,2.6
+OriginalHBO,utilizable,,2.1
+OriginalHC,utilizable,,2.1
+OriginalHCO,utilizable,,2.0
+OriginalHGS,utilizable,,2.4
+OriginalHGSO,utilizable,,2.3
+OriginalHHO,consumo_variable,usa 9326 de 10000 evaluaciones: sus evaluaciones por época varían y termina antes del presupuesto,2.2
+OriginalHS,utilizable,,3.2
+OriginalICA,utilizable,,2.1
+OriginalIMODE,utilizable,,3.1
+OriginalINFO,utilizable,,4.5
+OriginalIWO,consumo_variable,usa 8290 de 10000 evaluaciones: sus evaluaciones por época varían y termina antes del presupuesto,1.9
+OriginalJA,utilizable,,2.1
+OriginalLCO,utilizable,,2.1
+OriginalLSHADEcnEpSin,no_reproducible,1.75183e-13 vs 3.73218e-14,7.0
+OriginalMA,utilizable,,5.6
+OriginalMFO,utilizable,,2.1
+OriginalMGO,utilizable,,2.8
+OriginalMPA,utilizable,,2.4
+OriginalMRFO,utilizable,,2.1
+OriginalMSA,utilizable,,2.5
+OriginalMVO,utilizable,,3.7
+OriginalNGO,utilizable,,1.8
+OriginalNMRA,utilizable,,2.3
+OriginalNRO,utilizable,,3.8
+OriginalOOA,utilizable,,2.1
+OriginalPFA,utilizable,,12.4
+OriginalPOA,utilizable,,1.9
+OriginalPSO,utilizable,,2.4
+OriginalPSS,no_reproducible,50.7673 vs 37.6341,4.7
+OriginalQSA,utilizable,,2.7
+OriginalRIME,utilizable,,2.4
+OriginalRUN,utilizable,,4.6
+OriginalSA,utilizable,,4.0
+OriginalSARO,utilizable,,3.5
+OriginalSBO,utilizable,,3.9
+OriginalSCA,utilizable,,3.4
+OriginalSCSO,utilizable,,4.3
+OriginalSFO,consumo_variable,usa 9775 de 10000 evaluaciones: sus evaluaciones por época varían y termina antes del presupuesto,2.0
+OriginalSHADE,no_reproducible,1.38079e-09 vs 5.77078e-10,3.9
+OriginalSHIO,utilizable,,2.3
+OriginalSHO,consumo_variable,usa 9507 de 10000 evaluaciones: sus evaluaciones por época varían y termina antes del presupuesto,2.5
+OriginalSLO,utilizable,,2.7
+OriginalSMA,utilizable,,5.4
+OriginalSOA,utilizable,,2.2
+OriginalSOS,utilizable,,2.4
+OriginalSPBO,utilizable,,2.2
+OriginalSRSR,utilizable,,2.6
+OriginalSSA,utilizable,,2.6
+OriginalSSDO,utilizable,,2.5
+OriginalSSO,utilizable,,2.2
+OriginalSSpiderA,utilizable,,2.3
+OriginalSSpiderO,utilizable,,2.4
+OriginalSTO,utilizable,,2.1
+OriginalSeaHO,utilizable,,2.1
+OriginalServalOA,utilizable,,2.0
+OriginalSquirrelSA,utilizable,,2.0
+OriginalTDO,utilizable,,2.0
+OriginalTLO,utilizable,,2.6
+OriginalTOA,utilizable,,1.9
+OriginalTS,utilizable,,2.5
+OriginalTSA,utilizable,,2.1
+OriginalTSO,utilizable,,2.2
+OriginalTWO,utilizable,,6.3
+OriginalVCS,utilizable,,3.1
+OriginalWCA,consumo_variable,usa 9914 de 10000 evaluaciones: sus evaluaciones por época varían y termina antes del presupuesto,1.8
+OriginalWDO,utilizable,,2.1
+OriginalWHO,utilizable,,2.2
+OriginalWOA,utilizable,,1.9
+OriginalWaOA,utilizable,,1.8
+OriginalWarSO,utilizable,,2.0
+OriginalZOA,utilizable,,2.1
+P_PSO,utilizable,,2.1
+ProbBeesA,utilizable,,2.2
+QleSCA,utilizable,,8.7
+RW_GWO,utilizable,,2.3
+SADE,utilizable,,2.8
+SAP_DE,consumo_variable,usa 5610 de 10000 evaluaciones: sus evaluaciones por época varían y termina antes del presupuesto,2.1
+Simple_CMA_ES,utilizable,,2.2
+SingleGA,utilizable,,3.5
+SwarmHC,utilizable,,2.1
+SwarmSA,utilizable,,2.5
+WMQIMRFO,utilizable,,2.2
+WhaleFOA,fuera_de_limites,44 evaluaciones fuera de límites,2.9
